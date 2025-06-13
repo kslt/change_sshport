@@ -16,9 +16,16 @@ fi
 echo "🔐 Nuvarande SSH-port: $current_port"
 read -p "👉 Ange ny SSH-port (1-65535): " new_port
 
-# Kontrollera att input är ett giltigt portnummer
-if ! [[ "$new_port" =~ ^[0-9]+$ ]] || [ "$new_port" -lt 1 ] || [ "$new_port" -gt 65535 ]; then
-  echo "❌ Ogiltig port. Avbryter."
+# Kontrollera att porten är ett heltal mellan 1 och 65535
+if [[ "$new_port" =~ ^[0-9]+$ ]]; then
+  if (( new_port >= 1 && new_port <= 65535 )); then
+    echo "✅ Validerad port: $new_port"
+  else
+    echo "❌ Portnummer utanför tillåtet intervall (1-65535)."
+    exit 1
+  fi
+else
+  echo "❌ Ogiltigt format: Porten måste vara ett heltal."
   exit 1
 fi
 
